@@ -21,6 +21,7 @@ function draggableListEntered(){
     event.preventDefault();
 
     if(event.target.classList.contains("draggableItem")){
+        if(event.target.parentNode===draggableListSelectedItem.parentNode){
 
         for(let i=0;i<document.getElementsByClassName("draggableListDummyItem").length;i++){
             document.getElementsByClassName("draggableListDummyItem")[i].parentNode.removeChild(document.getElementsByClassName("draggableListDummyItem")[i]);
@@ -30,19 +31,17 @@ function draggableListEntered(){
             let dummy = draggableListSelectedItem.cloneNode(true);
             dummy.style.visibility="hidden";
             dummy.classList.add("draggableListDummyItem");
-            console.log("1");
             draggableListSelectedItem.parentNode.insertBefore(dummy, event.target);
             /* draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target); */
         }else{
             let dummy = draggableListSelectedItem.cloneNode(true);
             dummy.style.visibility="hidden";
             dummy.classList.add("draggableListDummyItem");
-            console.log("2");
             draggableListSelectedItem.parentNode.insertBefore(dummy, event.target.nextSibling);
            /*  draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target.nextSibling); */
         }
     
-
+    }
     }
 }
 
