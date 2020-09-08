@@ -1,8 +1,9 @@
 
 let draggableListSelectedItem=false;
 let draggableListSelectedItemOffsetHeight=0;
+let draggableListFirstDrag=false;
 
-    document.body.addEventListener("click", function(){event.target.style.pointerEvents="auto";});
+    /* document.body.addEventListener("click", function(){event.target.style.pointerEvents="auto";}); */
     document.body.addEventListener("mousedown", draggableListDragged);
     document.body.addEventListener("mousemove", draggableListEntered);
     window.addEventListener("mouseup", draggableListEnded);
@@ -20,56 +21,22 @@ function draggableListDragged(){
     if(event.target.classList.contains("draggableItem")){
 
     draggableListSelectedItem=event.target;
-
-    let dummy = draggableListSelectedItem.cloneNode(true);
-    dummy.style.visibility="hidden";
-    dummy.style.position="relative";
-    dummy.classList.add("draggableListDummyItem");
-    let draggableListSelectedItemTop=draggableListSelectedItem.getBoundingClientRect().top;
-    let draggableListSelectedItemLeft=draggableListSelectedItem.getBoundingClientRect().left;
-    let draggableListSelectedItemHeight=draggableListSelectedItem.offsetHeight;
-    let draggableListSelectedItemWidth=draggableListSelectedItem.offsetWidth;
-
-    draggableListSelectedItemOffsetHeight=(parseInt(event.clientY) - parseInt(draggableListSelectedItem.getBoundingClientRect().top));
-
-    draggableListSelectedItem.parentNode.insertBefore(dummy, event.target);
-
-    draggableListSelectedItem.style.position = "fixed";
-    draggableListSelectedItem.style.zIndex="99";
-    draggableListSelectedItem.style.top = draggableListSelectedItemTop + "px";
-    draggableListSelectedItem.style.height = draggableListSelectedItemHeight + "px";
-    draggableListSelectedItem.style.width = draggableListSelectedItemWidth + "px";
-    draggableListSelectedItem.style.pointerEvents="none"; 
     
     }else if(!event.target.classList.contains("draggableList")){
+
         draggableListSelectedItem=draggableListFindAncestor(event.target);
-
-        let dummy = draggableListSelectedItem.cloneNode(true);
-        dummy.style.visibility="hidden";
-        dummy.style.position="relative";
-        dummy.classList.add("draggableListDummyItem");
-    
-        let draggableListSelectedItemTop=draggableListSelectedItem.getBoundingClientRect().top;
-        let draggableListSelectedItemLeft=draggableListSelectedItem.getBoundingClientRect().left;
-        let draggableListSelectedItemHeight=draggableListSelectedItem.offsetHeight;
-        let draggableListSelectedItemWidth=draggableListSelectedItem.offsetWidth;
-
-        draggableListSelectedItemOffsetHeight=(parseInt(event.clientY) - parseInt(draggableListSelectedItem.getBoundingClientRect().top));
-
-        draggableListSelectedItem.parentNode.insertBefore(dummy, draggableListSelectedItem);
-
-        draggableListSelectedItem.style.position = "fixed";
-        draggableListSelectedItem.style.zIndex="99";
-        draggableListSelectedItem.style.top = draggableListSelectedItemTop + "px";
-        draggableListSelectedItem.style.height = draggableListSelectedItemHeight + "px";
-        draggableListSelectedItem.style.width = draggableListSelectedItemWidth + "px";
-        draggableListSelectedItem.style.pointerEvents="none";
         
     }
 }
 
 function draggableListEntered(){
     if(draggableListSelectedItem){
+
+        if(!draggableListFirstDrag){
+            draggableListHelper();
+            draggableListFirstDrag=true;
+        }
+
     draggableListSelectedItem.style.top = parseInt(event.clientY) - draggableListSelectedItemOffsetHeight + "px";
 
     if(event.target.classList.contains("draggableItem")){
@@ -162,6 +129,7 @@ draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyI
 }
 }
 draggableListSelectedItem=false;
+draggableListFirstDrag=false;
 draggableListMouseLeave();
 
 
@@ -183,4 +151,27 @@ function draggableListMouseLeave(){
 for(let i=0;i<document.getElementsByClassName("draggableListDummyItem").length;i++){
     document.getElementsByClassName("draggableListDummyItem")[i].parentNode.removeChild(document.getElementsByClassName("draggableListDummyItem")[i]);
 }
+}
+
+function draggableListHelper(){
+    let dummy = draggableListSelectedItem.cloneNode(true);
+    dummy.style.visibility="hidden";
+    dummy.style.position="relative";
+    dummy.classList.add("draggableListDummyItem");
+
+    let draggableListSelectedItemTop=draggableListSelectedItem.getBoundingClientRect().top;
+    let draggableListSelectedItemLeft=draggableListSelectedItem.getBoundingClientRect().left;
+    let draggableListSelectedItemHeight=draggableListSelectedItem.offsetHeight;
+    let draggableListSelectedItemWidth=draggableListSelectedItem.offsetWidth;
+
+    draggableListSelectedItemOffsetHeight=(parseInt(event.clientY) - parseInt(draggableListSelectedItem.getBoundingClientRect().top));
+
+    draggableListSelectedItem.parentNode.insertBefore(dummy, draggableListSelectedItem);
+
+    draggableListSelectedItem.style.position = "fixed";
+    draggableListSelectedItem.style.zIndex="99";
+    draggableListSelectedItem.style.top = draggableListSelectedItemTop + "px";
+    draggableListSelectedItem.style.height = draggableListSelectedItemHeight + "px";
+    draggableListSelectedItem.style.width = draggableListSelectedItemWidth + "px";
+    draggableListSelectedItem.style.pointerEvents="none";
 }
