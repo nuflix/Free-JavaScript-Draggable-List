@@ -1,35 +1,35 @@
-
 let draggableListSelectedItem=false;
 let draggableListSelectedItemOffsetHeight=0;
 let draggableListFirstDrag=false;
 
     /* document.body.addEventListener("click", function(){event.target.style.pointerEvents="auto";}); */
-    document.body.addEventListener("mousedown", draggableListDragged);
-    document.body.addEventListener("mousemove", draggableListEntered);
+    document.body.addEventListener("mousedown", draggableListMouseDown);
+    document.body.addEventListener("mousemove", draggableListMouseMove);
     window.addEventListener("mouseup", draggableListEnded);
-    window.addEventListener('selectstart', disableSelect); 
 
-for(let i=0; i<document.getElementsByClassName("draggableList").length; i++){
+    window.addEventListener('selectstart', draggableListDisableSelect); 
+
+/* for(let i=0; i<document.getElementsByClassName("draggableList").length; i++){
     document.getElementsByClassName("draggableList")[0].addEventListener("mouseleave", draggableListMouseLeave);
-}
+} */
 
 /* for(let i=0; i<document.getElementsByClassName("draggableItem").length; i++){
     document.getElementsByClassName("draggableItem")[i].draggable = true;
 } */
 
-function draggableListDragged(){
+function draggableListMouseDown(){
     if(event.target.classList.contains("draggableItem")){
 
     draggableListSelectedItem=event.target;
     
-    }else if(!event.target.classList.contains("draggableList")){
-
+    }else{
+//^^
         draggableListSelectedItem=draggableListFindAncestor(event.target);
         
     }
 }
 
-function draggableListEntered(){
+function draggableListMouseMove(){
     if(draggableListSelectedItem){
 
         if(!draggableListFirstDrag){
@@ -67,7 +67,8 @@ function draggableListEntered(){
         }
     
     }
-    }else if(!event.target.classList.contains("draggableList")){
+    }else{
+        //^^
         let el = draggableListFindAncestor(event.target);
         if(el){
         if(el.parentNode===draggableListSelectedItem.parentNode){
@@ -136,7 +137,7 @@ draggableListMouseLeave();
 
 }
 
-function disableSelect(){
+function draggableListDisableSelect(){
     if(draggableListSelectedItem){
     event.preventDefault();
     }
@@ -175,3 +176,4 @@ function draggableListHelper(){
     draggableListSelectedItem.style.width = draggableListSelectedItemWidth + "px";
     draggableListSelectedItem.style.pointerEvents="none";
 }
+
