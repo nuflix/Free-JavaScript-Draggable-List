@@ -3,9 +3,9 @@ let draggableListSelectedItem=false;
 
 for(let i=0; i<document.getElementsByClassName("draggableList").length; i++){
     
-    document.getElementsByClassName("draggableList")[i].addEventListener("click", function(){event.preventDefault();}); 
-    document.getElementsByClassName("draggableList")[i].addEventListener("mousedown", draggableListDragged);
-    document.getElementsByClassName("draggableList")[i].addEventListener("mousemove", draggableListEntered);
+    document.body.addEventListener("click", function(){event.preventDefault();}); 
+    document.body.addEventListener("mousedown", draggableListDragged);
+    document.body.addEventListener("mousemove", draggableListEntered);
     window.addEventListener("mouseup", draggableListEnded);
     window.addEventListener('selectstart', disableSelect);
 }
@@ -75,6 +75,7 @@ function draggableListEntered(){
 
 function draggableListEnded(){
     /* console.log(event.target); */
+    if(draggableListSelectedItem){
     draggableListSelectedItem.style.position="static";
     draggableListSelectedItem.style.top = "";
 draggableListSelectedItem.style.height = "";
@@ -85,6 +86,7 @@ if(event.target===draggableListSelectedItem.parentNode || event.target.parentNod
     if(draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0]){
 draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0]);
 draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0].parentNode.removeChild(draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0]);
+}
 }
 }
 
