@@ -39,8 +39,7 @@ function draggableListMouseMove(){
 
     draggableListSelectedItem.style.top = parseInt(event.clientY) - draggableListSelectedItemOffsetHeight + "px";
 
-    if(event.target.classList.contains("draggableItem")){
-        if(event.target.parentNode===draggableListSelectedItem.parentNode){
+    if(event.target.classList.contains("draggableItem") && (event.target.parentNode===draggableListSelectedItem.parentNode)){
 
             try{
             draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0].parentNode.removeChild(draggableListSelectedItem.parentNode.getElementsByClassName("draggableListDummyItem")[0]);
@@ -66,7 +65,6 @@ function draggableListMouseMove(){
            /*  draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target.nextSibling); */
         }
     
-    }
     }else{
         //^^
         let el = draggableListFindAncestor(event.target);
@@ -79,12 +77,13 @@ function draggableListMouseMove(){
             document.getElementsByClassName("draggableListDummyItem")[i].parentNode.removeChild(document.getElementsByClassName("draggableListDummyItem")[i]);
         } */
 
-        if((event.target.getBoundingClientRect().top+(parseInt(el.offsetHeight)/2))>parseInt(draggableListSelectedItem.style.top)){
+        if((el.getBoundingClientRect().top+(parseInt(el.offsetHeight)/2))>parseInt(draggableListSelectedItem.style.top)){
             let dummy = draggableListSelectedItem.cloneNode(true);
             dummy.style.visibility="hidden";
             dummy.style.position="static";
             dummy.classList.add("draggableListDummyItem");
             draggableListSelectedItem.parentNode.insertBefore(dummy, el);
+            console.log("test1");
             /* draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target); */
         }else{
             let dummy = draggableListSelectedItem.cloneNode(true);
@@ -92,6 +91,7 @@ function draggableListMouseMove(){
             dummy.style.position="static";
             dummy.classList.add("draggableListDummyItem");
             draggableListSelectedItem.parentNode.insertBefore(dummy, el.nextSibling);
+            console.log("test2");
            /*  draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target.nextSibling); */
         }
     
@@ -144,7 +144,14 @@ function draggableListDisableSelect(){
 }
 
 function draggableListFindAncestor (el) {
-    while ((el = el.parentElement) && !el.classList.contains("draggableItem"));
+    el=el.parentElement;
+    try{
+    while (!el.classList.contains("draggableItem")){
+        el = el.parentElement;
+    }
+}catch(e){
+console.log(el);
+}
     return el;
 }
 
