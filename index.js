@@ -83,7 +83,6 @@ function draggableListMouseMove(){
             dummy.style.position="static";
             dummy.classList.add("draggableListDummyItem");
             draggableListSelectedItem.parentNode.insertBefore(dummy, el);
-            console.log("test1");
             /* draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target); */
         }else{
             let dummy = draggableListSelectedItem.cloneNode(true);
@@ -91,7 +90,6 @@ function draggableListMouseMove(){
             dummy.style.position="static";
             dummy.classList.add("draggableListDummyItem");
             draggableListSelectedItem.parentNode.insertBefore(dummy, el.nextSibling);
-            console.log("test2");
            /*  draggableListSelectedItem.parentNode.insertBefore(draggableListSelectedItem, event.target.nextSibling); */
         }
     
@@ -150,7 +148,7 @@ function draggableListFindAncestor (el) {
         el = el.parentElement;
     }
 }catch(e){
-console.log(el);
+
 }
     return el;
 }
